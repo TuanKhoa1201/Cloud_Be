@@ -73,8 +73,13 @@ const mysql = require("mysql2/promise");
 // Lấy connection string từ biến môi trường
 const dbConfig = process.env.MYSQL_CONNECTION_STRING;
 
+// Kiểm tra nếu biến môi trường chưa được cấu hình hoặc không hợp lệ
+if (!dbConfig) {
+    console.error('MYSQL_CONNECTION_STRING is not defined. Please check the environment variable.');
+    process.exit(1); // Thoát ứng dụng nếu biến môi trường không hợp lệ
+}
+
 // Tách các thành phần từ connection string
-// Chúng ta sẽ parse chuỗi connection string thành các phần tử như user, password, host, database, v.v.
 const parseConnectionString = (connectionString) => {
   const regex = /^mysql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/([^?]+)$/;
   const match = connectionString.match(regex);
